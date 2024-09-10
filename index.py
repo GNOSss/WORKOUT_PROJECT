@@ -8,10 +8,10 @@ from sqlalchemy.exc import SQLAlchemyError
 
 
 
-@app.route('/')
+@app.route('/test')
 def home():
     SayHi = "운동기록 일지 서비스"
-    return render_template('index.html', A = SayHi)
+    return render_template('test.html', A = SayHi)
 
 
 @app.route('/1')
@@ -27,4 +27,51 @@ def sqladd():
         error = str(e.__dict__['orig'])
         return f'An error occurred: {error}'
     finally:
-        session.close()
+        session.clos
+
+
+
+@app.route('/charts')
+def charts():
+    return render_template('charts.html')   
+        
+        
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+
+@app.route('/layout-sidenav')
+def layout_sidenav():
+    return render_template('layout-sidenav-light.html')
+
+@app.route('/layout-static')
+def layout_static():
+    return render_template('layout-static.html')
+
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+@app.route('/password')
+def password():
+    return render_template('password.html')
+
+
+@app.route('/register')
+def register():
+    return render_template('register.html')
+
+
+@app.route('/tables')
+def tables():
+    return render_template('tables.html')
+
+
+
+
+
+
+
+
