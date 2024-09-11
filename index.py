@@ -37,8 +37,8 @@ def charts():
         
         
 @app.route('/')
-def index():
-    return render_template('index.html')
+def index2():
+    return render_template('index2.html')
 
 
 @app.route('/layout-sidenav')
