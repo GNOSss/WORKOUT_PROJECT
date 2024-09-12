@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, abort
 from WORKOUT_PROJECT import app
 from WORKOUT_PROJECT.init_db import db_session
 from WORKOUT_PROJECT.db_table import User, UserPhysical, WhatKindWorkOut, Routine, DailyRecord
@@ -43,9 +43,34 @@ def register():
 
 @app.route('/tables')
 def tables():
-    
     return render_template('tables.html',)
 
+
+
+# 에러 페이지
+
+@app.errorhandler(401)
+def unauthorized(error):
+    return render_template('401.html'),401        
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html'),404
+
+@app.errorhandler(500)
+def server_error(error):
+    return render_template('500.html'),500
+
+
+# 테스트용 라우트
+@app.route('/test-401')
+def test_401():
+    abort(401) #abort : 의도적으로 에러 발생하는 함수
+
+@app.route('/test-500')
+def test_500():
+    # 의도적으로 오류 발생
+    raise Exception("This is a test 500 error")
 
 
 
