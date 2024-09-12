@@ -1,5 +1,5 @@
 from WORKOUT_PROJECT.init_db import db_Base
-from sqlalchemy import Column, VARCHAR, DECIMAL, TIMESTAMP, INTEGER, Float, Boolean
+from sqlalchemy import Column, VARCHAR, DECIMAL, TIMESTAMP, INTEGER, Float, Boolean, Date, DateTime
 from sqlalchemy.orm import relationship, backref 
 from sqlalchemy import ForeignKey
 
@@ -29,17 +29,19 @@ class UserPhysical(db_Base):
     user_id = Column(VARCHAR(20), ForeignKey('User.user_id'), primary_key=True)
     user_height = Column(DECIMAL(5,2))
     user_weight = Column(DECIMAL(5,2))
+    user_of_birth = Column(Date, nullable=False)
     recorded_time = Column(TIMESTAMP, primary_key=True)
     user = relationship("User", backref="usertouserphysical")
     
-    def __init__(self, user_id=None, user_height=None, user_weight=None, recorded_time=None):
+    def __init__(self, user_id=None, user_height=None, user_weight=None, user_of_birth=None, recorded_time=None):
         self.user_id = user_id
         self.user_height = user_height
         self.user_weight = user_weight
+        self.user_of_birth = user_of_birth
         self.recorded_time = recorded_time
-        
+    
     def __repr__(self):
-        return f'UserPhysical(user_id={self.user_id}, user_height={self.user_height}, user_weight={self.user_weight}, recorded_time={self.recorded_time})'
+        return f'UserPhysical(user_id={self.user_id}, user_height={self.user_height}, user_weight={self.user_weight}, user_of_birth={self.user_of_birth} ,recorded_time={self.recorded_time})'
     
     
     
@@ -90,8 +92,8 @@ class DailyRecord(db_Base):
     routine_name = Column(VARCHAR(100), ForeignKey('Routine.routine_name'))
     workout_name = Column(VARCHAR(100))
     weight = Column(DECIMAL(5,2))
-    count = Column(DECIMAL(5))
-    routine = relationship(Routine, backref="routinetodailyrecord")
+    count = Column(INTEGER)
+    routine = relationship("Routine", backref="routinetodailyrecord")
     
     def __init__(self, today=None, routine_name=None, workout_name=None, weight=None, count=None):
         self.today = today
@@ -105,5 +107,27 @@ class DailyRecord(db_Base):
     
 
 
+class UserRecord(db_Base):
+    __tablename__ = 'UserRecord'
     
+    workout_name = Column(VARCHAR(100), ForeignKey('WhatKindWorkOut.workout_name'), primary_key=True)
+    today = Column(TIMESTAMP, ForeignKey('DailyRecord.today'), primary_key=True)
+    weight = Column(DECIMAL(5,2))
+    count = Column(INTEGER)
+    workout = relationship("WhatKindWorkout", back_populates="user_records")
+    daily_record = relationship("DailyRecord", back_populates="user_records")
+    
+    
+    def __init__(self, workout_name=None, today=None, weight=None, count=None):
+        self.workout_name=workout_name
+        self.today = today
+        self.weight = weight
+        self.count = count
+    
+    def __repr__(self):
+        return f'UserRecord(workout_name={self.workout_name}, today={self.today}, weight={self.weight}, count={self.count})'
+    
+
+
+
     

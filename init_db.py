@@ -19,3 +19,11 @@ def init_database():
     db_Base.metadata.create_all(db_engine)
     
 
+
+
+# # UserPhysical 테이블의 user_of_birth 컬럼 추가
+# from sqlalchemy import text
+
+# with db_engine.connect() as conn:
+#     conn.execute(text("ALTER TABLE UserPhysical ADD COLUMN user_of_birth DATE NOT NULL"))    
+#     conn.commit()
