@@ -8,10 +8,46 @@ from sqlalchemy import desc
 
 
 
-@app.route('/test')
-def home():
-    SayHi = "운동기록 일지 서비스"
-    return render_template('test.html', A = SayHi)
+        
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/charts')
+def charts():
+    return render_template('charts.html')
+
+
+@app.route('/layout-sidenav')
+def layout_sidenav():
+    return render_template('layout-sidenav-light.html')
+
+@app.route('/layout-static')
+def layout_static():
+    return render_template('layout-static.html')
+
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+@app.route('/password')
+def password():
+    return render_template('password.html')
+
+
+@app.route('/register')
+def register():
+    return render_template('register.html')
+
+
+@app.route('/tables')
+def tables():
+    
+    return render_template('tables.html',)
+
+
+
 
 
 @app.route('/1')
@@ -63,50 +99,9 @@ def sqladd():
     #     session.close()
 
 
-
-
-@app.route('/charts')
-def charts():
-    return render_template('charts.html')
-
-        
-@app.route('/')
-def index2():
-    return render_template('index2.html')
-
-
-@app.route('/layout-sidenav')
-def layout_sidenav():
-    return render_template('layout-sidenav-light.html')
-
-@app.route('/layout-static')
-def layout_static():
-    return render_template('layout-static.html')
-
-
-@app.route('/login')
-def login():
-    return render_template('login.html')
-
-@app.route('/password')
-def password():
-    return render_template('password.html')
-
-
-@app.route('/register')
-def register():
-    return render_template('register.html')
-
-
-@app.route('/tables')
-def tables():
-    
-    return render_template('tables.html',)
-
-
-
-
-
-
+@app.route('/test')
+def home():
+    SayHi = "운동기록 일지 서비스"
+    return render_template('test.html', A = SayHi)
 
 
