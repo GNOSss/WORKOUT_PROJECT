@@ -8,16 +8,111 @@ from sqlalchemy import desc
 
 
 
-        
+
 @app.route('/')
 def index():
     return render_template('index.html')
 
+
+
+# 신체 부위
+@app.route('/workout/chest')
+def wo_chest():
+    return render_template('workout/wo_chest.html')
+
+
+@app.route('/workout/back')
+def wo_back():
+    return render_template('workout/wo_back.html')
+
+
+@app.route('/workout/leg')
+def wo_leg():
+    return render_template('workout/wo_leg.html')
+
+
+@app.route('/workout/shoulder')
+def wo_shoulder():
+    return render_template('workout/wo_shoulder.html')
+
+
+@app.route('/workout/arm')
+def wo_arm():
+    return render_template('workout/wo_arm.html')
+
+
+@app.route('/workout/body')
+def wo_body():
+    return render_template('workout/wo_body.html')
+
+
+@app.route('/workout/cardio')
+def wo_cardio():
+    return render_template('workout/wo_cardio.html')
+
+
+@app.route('/workout/etc')
+def wo_etc():
+    return render_template('workout/wo_etc.html')
+
+
+
+# 기구 카테고리
+@app.route('/equipment/babel')
+def eq_babel():
+    return render_template('equipment/eq_babel.html')
+
+@app.route('/equipment/dumbel')
+def eq_dumbel():
+    return render_template('equipment/eq_dumbel.html')
+
+@app.route('/equipment/machine')
+def eq_machine():
+    return render_template('equipment/eq_machine.html')
+
+@app.route('/equipment/body')
+def eq_body():
+    return render_template('equipment/eq_body.html')
+
+@app.route('/equipment/etc')
+def eq_etc():
+    return render_template('equipment/eq_etc.html')
+
+
+
+
+
+# 차트
 @app.route('/charts')
 def charts():
     return render_template('charts.html')
 
+# 나의 기록
+@app.route('/myrecoard')
+def myrecoard():
+    return render_template('myrecoard.html',)
 
+
+
+# 로그인
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+# 비밀번호 찾기
+@app.route('/password')
+def password():
+    return render_template('password.html')
+
+# 회원가입
+@app.route('/register')
+def register():
+    return render_template('register.html')
+
+
+
+
+# 공통 레이아웃
 @app.route('/layout-sidenav')
 def layout_sidenav():
     return render_template('layout-sidenav-light.html')
@@ -27,30 +122,11 @@ def layout_static():
     return render_template('layout-static.html')
 
 
-@app.route('/login')
-def login():
-    return render_template('login.html')
-
-@app.route('/password')
-def password():
-    return render_template('password.html')
-
-
-@app.route('/register')
-def register():
-    return render_template('register.html')
-
-
-@app.route('/tables')
-def tables():
-    return render_template('tables.html',)
-
-
 
 # 에러 페이지
 
 @app.errorhandler(401)
-def unauthorized(error):
+def for_zero_one(error):
     return render_template('401.html'),401        
 
 @app.errorhandler(404)
@@ -62,10 +138,14 @@ def server_error(error):
     return render_template('500.html'),500
 
 
-# 테스트용 라우트
+# 에러 테스트 라우트
 @app.route('/test-401')
 def test_401():
     abort(401) #abort : 의도적으로 에러 발생하는 함수
+    
+@app.route('/test-404')
+def test_404():
+    abort(404) #abort : 의도적으로 에러 발생하는 함수
 
 @app.route('/test-500')
 def test_500():
