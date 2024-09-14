@@ -1,0 +1,50 @@
+workout_name,region,equipment,info
+Bench Press,Chest,Barbel,주로 가슴 근육을 타겟으로 하며 어깨와 삼두근도 함께 사용되는 복합 운동입니다.
+Squat,Leg,Barbel,대퇴사두근 햄스트링 둔근을 포함한 여러 근육군을 사용하는 기본적인 하체 운동입니다.
+Deadlift,Back,Barbel,등 다리 코어를 포함한 전체 후면 근육 체인을 타겟으로 하는 강력한 복합 운동입니다.
+Overhead Press,Shoulder,Barbel,군대식 프레스라고도 알려진 이 운동은 주로 어깨의 삼각근을 타겟으로 합니다.
+Barbell Row,Back,Barbel,등 근력과 두께를 키우는데 효과적인 운동으로 특히 광배근을 타겟으로 합니다.
+Pull-up,Back,Body,등 근육과 이두근을 타겟으로 하는 체중 운동으로 상체 근력 향상에 탁월합니다.
+Dip,Chest,Body,주로 가슴과 삼두근 근육을 사용하는 체중 운동입니다.
+Lunges,Leg,Dumbel,다리와 둔근을 타겟으로 하는 편측 운동으로 균형과 협응력 향상에 도움을 줍니다.
+Leg Press,Leg,Machine,하중을 기계로 지지하여 하부 등에 스트레스를 덜 주면서 대퇴사두근 햄스트링 둔근을 타겟으로 하는 운동입니다.
+Lat Pulldown,Back,Machine,등의 광배근을 타겟으로 하는 운동으로 풀업의 대안으로 자주 사용됩니다.
+Shoulder Press,Shoulder,Dumbel,덤벨을 사용하는 오버헤드 프레스의 변형으로 더 큰 동작 범위를 허용할 수 있습니다.
+Bicep Curl,Arm,Dumbel,상완의 이두근을 특정하여 타겟으로 하는 고립 운동입니다.
+Tricep Extension,Arm,Dumbel,상완 뒤쪽에 위치한 삼두근을 집중적으로 타겟으로 하는 고립 운동입니다.
+Calf Raise,Leg,Machine,종아리 근육을 특정하여 타겟으로 하며 하체 근력과 정의를 향상시키는데 도움을 주는 운동입니다.
+Leg Extension,Leg,Machine,대퇴 앞쪽의 대퇴사두근을 타겟으로 하는 고립 운동입니다.
+Leg Curl,Leg,Machine,대퇴 뒤쪽의 햄스트링 근육을 타겟으로 하는 고립 운동입니다.
+Chest Fly,Chest,Machine,가슴 근육을 집중적으로 타겟으로 하는 고립 운동으로 특히 바깥쪽 부분을 강조합니다.
+Lateral Raise,Shoulder,Dumbel,어깨의 측면 삼각근을 타겟으로 하는 고립 운동입니다.
+Face Pull,Shoulder,Machine,후면 삼각근과 상부 등 근육을 타겟으로 하며 자세 개선에 도움을 주는 운동입니다.
+Plank,Body,Body,코어 근육을 사용하는 정적 운동으로 안정성을 향상시키고 복근을 강화하는데 도움을 줍니다.
+Russian Twist,Body,Body,복사근을 타겟으로 하는 회전 운동으로 코어 근력과 안정성 향상에 도움을 줍니다.
+Crunch,Body,Body,코어의 복직근을 타겟으로 하는 고전적인 복근 운동입니다.
+Mountain Climber,Body,Body,코어를 사용하면서 동시에 심혈관 운동도 제공하는 동적 운동입니다.
+Push-up,Chest,Body,주로 가슴 근육을 타겟으로 하며 어깨와 삼두근도 함께 사용되는 고전적인 체중 운동입니다.
+Dumbbell Bench Press,Chest,Dumbel,덤벨을 사용하는 벤치 프레스의 변형으로 더 큰 동작 범위를 허용할 수 있습니다.
+Incline Bench Press,Chest,Barbel,경사진 벤치에서 수행하는 벤치 프레스의 변형으로 상부 가슴 근육을 타겟으로 합니다.
+Decline Bench Press,Chest,Barbel,하강 벤치에서 수행하는 벤치 프레스의 변형으로 하부 가슴 근육을 타겟으로 합니다.
+Romanian Deadlift,Back,Barbel,햄스트링과 하부 등 근육을 특정하여 타겟으로 하는 데드리프트의 변형입니다.
+Good Morning,Back,Barbel,하부 등 햄스트링 둔근을 타겟으로 하며 후면 근육 체인을 강화하는데 도움을 주는 운동입니다.
+Seated Row,Back,Machine,중앙 등 근육을 타겟으로 하는 기계 기반 운동으로 자세 개선에 도움을 줍니다.
+T-Bar Row,Back,Barbel,더 좁은 그립을 허용하는 바벨 로우의 변형으로 중앙 및 하부 등 근육을 타겟으로 합니다.
+Front Squat,Leg,Barbel,바벨을 몸 앞에 두고 수행하는 스쿼트의 변형으로 대퇴사두근에 더 집중합니다.
+Hack Squat,Leg,Machine,하부 등에 스트레스를 덜 주면서 대퇴사두근을 타겟으로 하는 기계 기반 스쿼트 변형입니다.
+Leg Extension,Leg,Machine,대퇴 앞쪽의 대퇴사두근을 특정하여 타겟으로 하는 고립 운동입니다.
+Standing Calf Raise,Leg,Machine,서서 수행하는 카프 레이즈 변형으로 비복근을 타겟으로 합니다.
+Seated Calf Raise,Leg,Machine,앉아서 수행하는 카프 레이즈 변형으로 가자미근을 타겟으로 합니다.
+Arnold Press,Shoulder,Dumbel,회전을 포함하여 삼각근의 세 부위를 모두 타겟으로 하는 숄더 프레스의 변형입니다.
+Upright Row,Shoulder,Barbel,측면 삼각근과 상부 승모근을 타겟으로 하는 운동이지만 주의해서 수행해야 합니다.
+Shrug,Shoulder,Dumbel,상부 등의 승모근을 특정하여 타겟으로 하는 운동입니다.
+Hammer Curl,Arm,Dumbel,이두근과 상완근 모두를 타겟으로 하는 비세프 컬의 변형입니다.
+Preacher Curl,Arm,Barbel,프리처 벤치에서 수행하는 이두근 운동으로 이두근을 고립시키고 몸의 움직임을 줄입니다.
+Skull Crusher,Arm,Barbel,벤치에 누워 수행하는 삼두근 운동으로 삼두근의 세 부위를 모두 타겟으로 합니다.
+Dips,Arm,Body,주로 삼두근과 하부 가슴 근육을 타겟으로 하는 복합 체중 운동입니다.
+Cable Tricep Pushdown,Arm,Machine,케이블 기계를 사용하여 수행하는 삼두근을 위한 고립 운동입니다.
+Chin-up,Back,Body,언더핸드 그립을 사용하는 풀업의 변형으로 등 근육과 이두근을 타겟으로 합니다.
+Inverted Row,Back,Body,상부 등 근육을 타겟으로 하는 체중 운동으로 풀업의 전단계로 활용할 수 있습니다.
+Burpee,Cardio,Body,스쿼트 푸시업 점프를 결합한 전신 운동으로 근력과 심혈관 이점을 모두 제공합니다.
+Jump Rope,Cardio,ETC,협응력과 지구력을 향상시키고 효율적으로 칼로리를 소모하는 고전적인 심혈관 운동입니다.
+Box Jump,Cardio,ETC,하체의 폭발적인 파워를 향상시키면서 심혈관 이점도 제공하는 플라이오메트릭 운동입니다.

@@ -6,6 +6,9 @@ from sqlalchemy.exc import SQLAlchemyError
 from datetime import date, datetime
 from sqlalchemy import desc
 
+# csv파일 DB에 입력하기 위해
+import pandas as pd
+
 
 
 
@@ -177,36 +180,94 @@ def sqladd():
     
     # # UserPhysical 테스트 생성
     # try:
-    #     test_userphysical = UserPhysical(user_id='test_user', user_height='173.5', user_weight='81.5',user_of_birth=date(1993,8,9), recorded_time=datetime.now())
+    #     test_userphysical = UserPhysical(user_id='test_user2', user_height='190', user_weight='99',user_of_birth=date(1988,12,18), recorded_time=datetime.now())
     #     session.add(test_userphysical)
     #     session.commit()
     #     return '유저 신체정보 입력완성'
     
     # except SQLAlchemyError as e:
     #     session.rollback()
-    #     error = str(e.__dict__['orig'])
+    #     error = str(e)
     #     return f'An error occurred: {error}'    
         
     # finally:
     #     session.close()        
     
-    # # User 테스트 생성
+    
+    # User 테스트 생성
     # try:
-    #     test_user = User(user_id='test_user', user_pw='1234', user_name='test', user_email='test@example.com')
-    #     session.add(test_user)
+    #     for i in range(2,11):
+    #         user_id = f'test_user{i}'
+    #         user_pw = '1234'
+    #         user_name = f'test{i}'
+    #         user_email = f'test{i}@example.com'
+    
+    #         test_user = User(user_id=user_id, user_pw=user_pw, user_name=user_name, user_email=user_email)
+    #         session.add(test_user)
     #     session.commit()
     #     return 'User added successfully!'
     # except SQLAlchemyError as e:
     #     session.rollback()
-    #     error = str(e.__dict__['orig'])
+    #     error = str(e)
+    #     return f'An error occurred: {error}'
+    # finally:
+    #     session.close()
+    
+    
+    # WhatKindWorkOut 테스트 생성
+    # datafile = pd.read_csv('WORKOUT_PROJECT/workoutsample.csv')
+    # try:      
+    #     for _, row in datafile.iterrows():
+    #         workout = WhatKindWorkOut(
+    #             workout_name=row['workout_name'],
+    #             region=row['region'],
+    #             equipment=row['equipment'],
+    #             info=row['info']
+    #         )
+    #         session.add(workout)
+    #     session.commit()
+    #     return 'workout 입력완료!'
+    
+    # except SQLAlchemyError as e:
+    #     session.rollback()
+    #     error = str(e)
     #     return f'An error occurred: {error}'
     # finally:
     #     session.close()
 
 
+    # Routine 테스트 생성
+    # try:
+    #     workout_names = ['Overhead Press', 'Shoulder Press', 'Lateral Raise', 'Face Pull', 'Arnold Press']
+        
+    #     template_name = '4분할'
+    #     user_id = 'test_user1'
+    #     routine_name = '어깨'
+        
+    #     for workout_name in workout_names:
+    #         new_routine = Routine(
+    #             template_name=template_name,
+    #             user_id=user_id,
+    #             routine_name=routine_name,
+    #             workout_name=workout_name
+    #         )        
+    #         session.add(new_routine)
+    #     session.commit()
+    #     return '유저 루틴 입력완성'
+    
+    # except SQLAlchemyError as e:
+    #     session.rollback()
+    #     error = str(e)
+    #     return f'An error occurred: {error}'    
+        
+    # finally:
+    #     session.close()        
+    
+
 @app.route('/test')
 def home():
     SayHi = "운동기록 일지 서비스"
     return render_template('test.html', A = SayHi)
+
 
 
