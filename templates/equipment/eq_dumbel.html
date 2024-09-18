@@ -1,1 +1,32 @@
 {% extends "base.html" %}
+
+
+{% block content %}
+
+<h1>Dumbel Workouts</h1>
+<div class = "workout-list-dumbel">
+    {% if dumbels %}
+        <table id = "workout-dumbel-table">
+            <thead>
+                <tr>
+                    <th>Workout Name</th>
+                    <th>Region</th>
+                    <th>Info</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for dumbel in dumbels %}
+                <tr>
+                    <td>{{ dumbel.workout_name }}</td>
+                    <td>{{ dumbel.region }}</td>
+                    <td>{{ dumbel.info }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No workouts found.</p>
+    {% endif %}
+</div>
+{% endblock content %}
+    

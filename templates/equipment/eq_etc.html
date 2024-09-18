@@ -1,1 +1,32 @@
 {% extends "base.html" %}
+
+
+{% block content %}
+
+<h1>ETC Workouts</h1>
+<div class = "workout-list-etc">
+    {% if etcs %}
+        <table id = "workout-etc-table">
+            <thead>
+                <tr>
+                    <th>Workout Name</th>
+                    <th>Region</th>
+                    <th>Info</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for etc in etcs %}
+                <tr>
+                    <td>{{ etc.workout_name }}</td>
+                    <td>{{ etc.region }}</td>
+                    <td>{{ etc.info }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No workouts found.</p>
+    {% endif %}
+</div>
+{% endblock content %}
+    

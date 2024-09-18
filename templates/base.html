@@ -54,6 +54,10 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 나의 프로필
                             </a>
+                            <a class="nav-link" href="{{url_for('routine')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                                나의 루틴
+                            </a>
                             <div class="sb-sidenav-menu-heading">Interface</div>
 
                             <!-- Dark Mode, Light Mode 메뉴 (필요하지 않으므로 주석처리)
@@ -99,7 +103,7 @@
                                     </a>
                                     <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                         <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="{{url_for('eq_babel')}}">바벨</a>
+                                            <a class="nav-link" href="{{url_for('eq_barbel')}}">바벨</a>
                                             <a class="nav-link" href="{{url_for('eq_dumbel')}}">덤벨</a>
                                             <a class="nav-link" href="{{url_for('eq_machine')}}">머신</a>
                                             <a class="nav-link" href="{{url_for('eq_body')}}">전신</a>

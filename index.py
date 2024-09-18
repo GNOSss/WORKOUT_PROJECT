@@ -4,7 +4,7 @@ from WORKOUT_PROJECT.init_db import db_session
 from WORKOUT_PROJECT.db_table import User, UserPhysical, WhatKindWorkOut, Routine, DailyRecord
 from sqlalchemy.exc import SQLAlchemyError
 from datetime import date, datetime
-from sqlalchemy import desc
+from sqlalchemy import desc, or_
 
 # csv파일 DB에 입력하기 위해
 import pandas as pd
@@ -17,69 +17,149 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/routine')
+def routine():
+    return render_template('routine.html')
+
 
 # 신체 부위
 @app.route('/workout/chest')
 def wo_chest():
-    return render_template('workout/wo_chest.html')
+    try:
+        chests = db_session.query(WhatKindWorkOut).filter(WhatKindWorkOut.region == 'Chest').all()    
+        return render_template('workout/wo_chest.html', chests=chests)
+    
+    except SQLAlchemyError as e:
+        print("Error >>", e)
 
 
 @app.route('/workout/back')
 def wo_back():
-    return render_template('workout/wo_back.html')
+    try:
+        backs = db_session.query(WhatKindWorkOut).filter(WhatKindWorkOut.region == 'Back').all()    
+        return render_template('workout/wo_back.html', backs=backs)
+        
+    except SQLAlchemyError as e:
+        print("Error >>", e)
 
 
 @app.route('/workout/leg')
-def wo_leg():
-    return render_template('workout/wo_leg.html')
+def wo_leg():        
+    try:
+        legs = db_session.query(WhatKindWorkOut).filter(WhatKindWorkOut.region == 'Leg').all()    
+        return render_template('workout/wo_leg.html', legs=legs)
+        
+    except SQLAlchemyError as e:
+        print("Error >>", e)
+
 
 
 @app.route('/workout/shoulder')
 def wo_shoulder():
-    return render_template('workout/wo_shoulder.html')
+    try:
+        shoulders = db_session.query(WhatKindWorkOut).filter(WhatKindWorkOut.region == 'Shoulder').all()    
+        return render_template('workout/wo_shoulder.html', shoulders=shoulders)
+    
+    except SQLAlchemyError as e:
+        print("Error >>", e)
 
 
 @app.route('/workout/arm')
 def wo_arm():
-    return render_template('workout/wo_arm.html')
-
+    try:
+        arms = db_session.query(WhatKindWorkOut).filter(WhatKindWorkOut.region == 'Arm').all()    
+        return render_template('workout/wo_arm.html', arms=arms)
+        
+    except SQLAlchemyError as e:
+        print("Error >>", e)
 
 @app.route('/workout/body')
 def wo_body():
-    return render_template('workout/wo_body.html')
+    try:
+        bodys = db_session.query(WhatKindWorkOut).filter(WhatKindWorkOut.region == 'Body').all()    
+        return render_template('workout/wo_body.html', bodys=bodys)
+        
+    except SQLAlchemyError as e:
+        print("Error >>", e)
 
 
 @app.route('/workout/cardio')
 def wo_cardio():
-    return render_template('workout/wo_cardio.html')
+    try:
+        cardios = db_session.query(WhatKindWorkOut).filter(WhatKindWorkOut.region == 'Cardio').all()    
+        return render_template('workout/wo_cardio.html', cardios=cardios)
+    
+    except SQLAlchemyError as e:
+        print("Error >>", e)
+        
 
 
 @app.route('/workout/etc')
 def wo_etc():
-    return render_template('workout/wo_etc.html')
+    try:
+        etcs = db_session.query(WhatKindWorkOut).filter(WhatKindWorkOut.region == 'Etc').all()    
+        return render_template('workout/wo_etc.html', etcs=etcs)
+    
+    except SQLAlchemyError as e:
+        print("Error >>", e)
+    
 
 
 
 # 기구 카테고리
-@app.route('/equipment/babel')
-def eq_babel():
-    return render_template('equipment/eq_babel.html')
+@app.route('/equipment/barbel')
+def eq_barbel():
+    try:
+        barbels = db_session.query(WhatKindWorkOut).filter(
+            or_(
+                WhatKindWorkOut.equipment == 'babel', 
+                WhatKindWorkOut.equipment == 'barbel'
+                )
+            ).order_by(WhatKindWorkOut.region, WhatKindWorkOut.workout_name).all()
+        return render_template('equipment/eq_barbel.html', barbels=barbels)
+    
+    except SQLAlchemyError as e:
+        print("Error >>", e)
+
 
 @app.route('/equipment/dumbel')
 def eq_dumbel():
-    return render_template('equipment/eq_dumbel.html')
+    try:
+        dumbels = db_session.query(WhatKindWorkOut).filter(WhatKindWorkOut.equipment == 'dumbel').order_by(WhatKindWorkOut.region).all()    
+        return render_template('equipment/eq_dumbel.html', dumbels=dumbels)
+    
+    except SQLAlchemyError as e:
+        print("Error >>", e)
+
 
 @app.route('/equipment/machine')
 def eq_machine():
-    return render_template('equipment/eq_machine.html')
+    try:
+        machines = db_session.query(WhatKindWorkOut).filter(WhatKindWorkOut.equipment =='machine').order_by(WhatKindWorkOut.region).all()    
+        return render_template('equipment/eq_machine.html', machines=machines)
+                            
+    except SQLAlchemyError as e:
+        print("Error >>", e)
+
 
 @app.route('/equipment/body')
 def eq_body():
-    return render_template('equipment/eq_body.html')
+    try:
+        bodies = db_session.query(WhatKindWorkOut).filter(WhatKindWorkOut.equipment == 'body').order_by(WhatKindWorkOut.region).all()    
+        return render_template('equipment/eq_body.html', bodies=bodies)
+    
+    except SQLAlchemyError as e:
+        print("Error >>", e)
+
 
 @app.route('/equipment/etc')
 def eq_etc():
-    return render_template('equipment/eq_etc.html')
+    try:
+        etcs = db_session.query(WhatKindWorkOut).filter(WhatKindWorkOut.equipment == 'etc').order_by(WhatKindWorkOut.region).all()    
+        return render_template('equipment/eq_etc.html', etcs=etcs)
+    
+    except SQLAlchemyError as e:
+        print("Error >>", e)
 
 
 

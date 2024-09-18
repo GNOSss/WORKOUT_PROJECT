@@ -1,1 +1,32 @@
 {% extends "base.html" %}
+
+
+{% block content %}
+
+<h1>Body Workouts</h1>
+<div class = "workout-list-body">
+    {% if bodies %}
+        <table id = "workout-body-table">
+            <thead>
+                <tr>
+                    <th>Workout Name</th>
+                    <th>Region</th>
+                    <th>Info</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for body in bodies %}
+                <tr>
+                    <td>{{ body.workout_name }}</td>
+                    <td>{{ body.region }}</td>
+                    <td>{{ body.info }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No workouts found.</p>
+    {% endif %}
+</div>
+{% endblock content %}
+    

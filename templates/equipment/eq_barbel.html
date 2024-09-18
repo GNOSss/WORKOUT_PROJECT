@@ -3,23 +3,23 @@
 
 {% block content %}
 
-<h1>Leg Workouts</h1>
-<div class = "workout-list-legs">
-    {% if legs %}
-        <table id = "workout-leg-table">
+<h1>Barbel Workouts</h1>
+<div class = "workout-list-barbel">
+    {% if barbels %}
+        <table id = "workout-barbel-table">
             <thead>
                 <tr>
                     <th>Workout Name</th>
-                    <th>Equipment</th>
+                    <th>Region</th>
                     <th>Info</th>
                 </tr>
             </thead>
             <tbody>
-                {% for leg in legs %}
+                {% for barbel in barbels %}
                 <tr>
-                    <td>{{ leg.workout_name }}</td>
-                    <td>{{ leg.equipment }}</td>
-                    <td>{{ leg.info }}</td>
+                    <td>{{ barbel.workout_name }}</td>
+                    <td>{{ barbel.region }}</td>
+                    <td>{{ barbel.info }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
