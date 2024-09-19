@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{ region|capitalize }} Workouts</h1>
+
+{% include "workouts_list_nav_link.html" %}
+
+{% if workouts %}
+    <table id="workout-{{ region }}-table">
+        <thead>
+            <tr>
+                <th>Workout Name</th>
+                <th>Equipment</th>
+                <th>Info</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for workout in workouts %}
+            <tr>
+                <td>{{ workout.workout_name }}</td>
+                <td>{{ workout.equipment }}</td>
+                <td>{{ workout.info }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No workouts found for {{ region }}.</p>
+{% endif %}
+{% endblock content %}
