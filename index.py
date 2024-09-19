@@ -22,145 +22,67 @@ def routine():
     return render_template('routine.html')
 
 
+
 # 신체 부위
-@app.route('/workout/chest')
-def wo_chest():
-    try:
-        chests = db_session.query(WhatKindWorkOut).filter(WhatKindWorkOut.region == 'Chest').all()    
-        return render_template('workout/wo_chest.html', chests=chests)
+@app.route('/workout/<region>')
+def workout_route(region):
     
-    except SQLAlchemyError as e:
-        print("Error >>", e)
-
-
-@app.route('/workout/back')
-def wo_back():
-    try:
-        backs = db_session.query(WhatKindWorkOut).filter(WhatKindWorkOut.region == 'Back').all()    
-        return render_template('workout/wo_back.html', backs=backs)
-        
-    except SQLAlchemyError as e:
-        print("Error >>", e)
-
-
-@app.route('/workout/leg')
-def wo_leg():        
-    try:
-        legs = db_session.query(WhatKindWorkOut).filter(WhatKindWorkOut.region == 'Leg').all()    
-        return render_template('workout/wo_leg.html', legs=legs)
-        
-    except SQLAlchemyError as e:
-        print("Error >>", e)
-
-
-
-@app.route('/workout/shoulder')
-def wo_shoulder():
-    try:
-        shoulders = db_session.query(WhatKindWorkOut).filter(WhatKindWorkOut.region == 'Shoulder').all()    
-        return render_template('workout/wo_shoulder.html', shoulders=shoulders)
+    # URL 매개변수 region의 객체가 아래 8개 중에 있는지 검사
+    valid_regions = {'chest', 'back', 'leg', 'shoulder', 'arm', 'body', 'cardio', 'etc'}
+    if region.lower() not in valid_regions:    
+        abort(404, description="Invalid workout region")
     
-    except SQLAlchemyError as e:
-        print("Error >>", e)
-
-
-@app.route('/workout/arm')
-def wo_arm():
-    try:
-        arms = db_session.query(WhatKindWorkOut).filter(WhatKindWorkOut.region == 'Arm').all()    
-        return render_template('workout/wo_arm.html', arms=arms)
-        
-    except SQLAlchemyError as e:
-        print("Error >>", e)
-
-@app.route('/workout/body')
-def wo_body():
-    try:
-        bodys = db_session.query(WhatKindWorkOut).filter(WhatKindWorkOut.region == 'Body').all()    
-        return render_template('workout/wo_body.html', bodys=bodys)
-        
-    except SQLAlchemyError as e:
-        print("Error >>", e)
-
-
-@app.route('/workout/cardio')
-def wo_cardio():
-    try:
-        cardios = db_session.query(WhatKindWorkOut).filter(WhatKindWorkOut.region == 'Cardio').all()    
-        return render_template('workout/wo_cardio.html', cardios=cardios)
+    # URL 매개변수 region을 .capitalize() 첫글자 대문자화 , db_session 연결하고 get_workouts_by_region함수 호출하여 DB에서 데이터 추출
+    workouts = get_workouts_by_region(region.capitalize(), db_session)
+    if workouts is None:
+        abort(500, description="An error occurred while fetching workouts")
     
-    except SQLAlchemyError as e:
-        print("Error >>", e)
-        
+    # get_workouts_by_region에서 받아온 결과 값(workouts)과 region을 html로 반환 , 이때 capitalize()했던 값을 다시 .lower()처리
+    # return render_template(f'workout/wo_{region.lower()}.html', workouts=workouts, region=region)
+    return render_template('workout/workout.html', workouts=workouts, region=region)
 
 
-@app.route('/workout/etc')
-def wo_etc():
+def get_workouts_by_region(region, session):
     try:
-        etcs = db_session.query(WhatKindWorkOut).filter(WhatKindWorkOut.region == 'Etc').all()    
-        return render_template('workout/wo_etc.html', etcs=etcs)
-    
+        # get_workouts_by_region함수에 region = WhatKindWorkOut테이블의 컬럼명, session은 db_session 역할을 하게 됨
+        return session.query(WhatKindWorkOut).filter(WhatKindWorkOut.region == region).all()
     except SQLAlchemyError as e:
-        print("Error >>", e)
-    
+        print(f"Error fetching {region} workouts: {e}")
+        return None
+
+
+
 
 
 
 # 기구 카테고리
-@app.route('/equipment/barbel')
-def eq_barbel():
-    try:
-        barbels = db_session.query(WhatKindWorkOut).filter(
-            or_(
-                WhatKindWorkOut.equipment == 'babel', 
-                WhatKindWorkOut.equipment == 'barbel'
-                )
-            ).order_by(WhatKindWorkOut.region, WhatKindWorkOut.workout_name).all()
-        return render_template('equipment/eq_barbel.html', barbels=barbels)
+@app.route('/equipment/<equipment>')
+def equipment_route(equipment):
     
-    except SQLAlchemyError as e:
-        print("Error >>", e)
-
-
-@app.route('/equipment/dumbel')
-def eq_dumbel():
-    try:
-        dumbels = db_session.query(WhatKindWorkOut).filter(WhatKindWorkOut.equipment == 'dumbel').order_by(WhatKindWorkOut.region).all()    
-        return render_template('equipment/eq_dumbel.html', dumbels=dumbels)
+    # URL 매개변수 equipment의 객체가 아래 5개 중에 있는지 검사
+    valid_equipments = {'barbel', 'dumbel', 'machine', 'body', 'etc'}
+    if equipment not in valid_equipments:
+        return "Invalid equipment type", 400
     
-    except SQLAlchemyError as e:
-        print("Error >>", e)
-
-
-@app.route('/equipment/machine')
-def eq_machine():
-    try:
-        machines = db_session.query(WhatKindWorkOut).filter(WhatKindWorkOut.equipment =='machine').order_by(WhatKindWorkOut.region).all()    
-        return render_template('equipment/eq_machine.html', machines=machines)
-                            
-    except SQLAlchemyError as e:
-        print("Error >>", e)
-
-
-@app.route('/equipment/body')
-def eq_body():
-    try:
-        bodies = db_session.query(WhatKindWorkOut).filter(WhatKindWorkOut.equipment == 'body').order_by(WhatKindWorkOut.region).all()    
-        return render_template('equipment/eq_body.html', bodies=bodies)
+    # URL 매개변수 equipment를 .capitalize() 첫글자 대문자화, db_session 연결하고 get_workouts_by_equipment함수 호출하여 DB에서 데이터 추출
+    workouts = get_workouts_by_equipment(equipment, db_session)
+    if workouts is None:
+        return abort(500, description="An error occurred while fetching workouts")
     
-    except SQLAlchemyError as e:
-        print("Error >>", e)
+    # get_workouts_by_equipment에서 받아온 결과 값(workouts)와 equipment를 html로 반환, 이때 capitalize()했던 값을 다시.lower()처리
+    # return render_template(f'equipment/eq_{equipment}.html', workouts=workouts)
+    return render_template('equipment/equipment.html', workouts=workouts, equipmnet=equipment)
 
 
-@app.route('/equipment/etc')
-def eq_etc():
+def get_workouts_by_equipment(equipment, session):
     try:
-        etcs = db_session.query(WhatKindWorkOut).filter(WhatKindWorkOut.equipment == 'etc').order_by(WhatKindWorkOut.region).all()    
-        return render_template('equipment/eq_etc.html', etcs=etcs)
-    
+        workouts = session.query(WhatKindWorkOut).filter(WhatKindWorkOut.equipment == equipment)\
+                                                    .order_by(WhatKindWorkOut.region, WhatKindWorkOut.workout_name).all()
+        return workouts
     except SQLAlchemyError as e:
-        print("Error >>", e)
-
+        print(f"Error fetching {equipment} workouts: {e}")
+        return None
+    
 
 
 

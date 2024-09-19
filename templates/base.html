@@ -87,14 +87,9 @@
                                     </a>
                                     <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                         <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="{{url_for('wo_chest')}}">가슴</a>
-                                            <a class="nav-link" href="{{url_for('wo_back')}}">등</a>
-                                            <a class="nav-link" href="{{url_for('wo_leg')}}">다리</a>
-                                            <a class="nav-link" href="{{url_for('wo_shoulder')}}">어깨</a>
-                                            <a class="nav-link" href="{{url_for('wo_arm')}}">팔</a>
-                                            <a class="nav-link" href="{{url_for('wo_body')}}">전신</a>
-                                            <a class="nav-link" href="{{url_for('wo_cardio')}}">유산소</a>
-                                            <a class="nav-link" href="{{url_for('wo_etc')}}">기타</a>
+                                            {% for region in ['chest', 'back', 'leg', 'shoulder', 'arm', 'body', 'cardio', 'etc'] %}
+                                                <a class="nav-link" href="{{ url_for('workout_route', region=region) }}">{{ region|capitalize }}</a>
+                                            {% endfor %}
                                         </nav>
                                     </div>
                                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
@@ -103,12 +98,9 @@
                                     </a>
                                     <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                         <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="{{url_for('eq_barbel')}}">바벨</a>
-                                            <a class="nav-link" href="{{url_for('eq_dumbel')}}">덤벨</a>
-                                            <a class="nav-link" href="{{url_for('eq_machine')}}">머신</a>
-                                            <a class="nav-link" href="{{url_for('eq_body')}}">전신</a>
-                                            <a class="nav-link" href="{{url_for('eq_etc')}}">기타</a>
-                                            
+                                            {% for equipment in ['barbel', 'dumbel', 'machine', 'body', 'etc'] %}
+                                                <a class="nav-link" href="{{ url_for('equipment_route', equipment=equipment) }}">{{ equipment|capitalize }}</a>
+                                            {% endfor %}
                                         </nav>
                                     </div>
                                 </nav>

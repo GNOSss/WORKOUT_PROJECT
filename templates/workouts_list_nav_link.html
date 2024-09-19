@@ -1,0 +1,14 @@
+<div class = "workout-lists-container">
+    <strong>장비</strong>
+    <div class = "workout-equipment-list">
+        {% for equipment in ['barbel', 'dumbel', 'machine', 'body', 'etc'] %}
+            <a class="nav-link" href="{{ url_for('equipment_route', equipment=equipment) }}">{{ equipment|capitalize }}</a>
+        {% endfor %}
+    </div>
+    <strong>부위</strong>
+    <div class = "workout-region-list">
+        {% for region in ['chest', 'back', 'leg', 'shoulder', 'arm', 'body', 'cardio', 'etc'] %}
+            <a class="nav-link" href="{{ url_for('workout_route', region=region) }}">{{ region|capitalize }}</a>
+        {% endfor %}
+    </div>
+</div>
