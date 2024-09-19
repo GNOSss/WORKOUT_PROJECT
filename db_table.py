@@ -1,5 +1,5 @@
 from WORKOUT_PROJECT.init_db import db_Base
-from sqlalchemy import Column, VARCHAR, DECIMAL, TIMESTAMP, INTEGER, Float, Boolean
+from sqlalchemy import Column, VARCHAR, DECIMAL, TIMESTAMP, INTEGER, Float, Boolean, Date, DateTime
 from sqlalchemy.orm import relationship, backref 
 from sqlalchemy import ForeignKey
 
@@ -11,6 +11,9 @@ class User(db_Base):
     user_pw = Column(VARCHAR(100), nullable=False)
     user_name = Column(VARCHAR(20), nullable=False)
     user_email = Column(VARCHAR(100))
+    
+    user_physicals = relationship("UserPhysical", back_populates="user")
+    routines = relationship("Routine", back_populates="user")
     
     def __init__(self, user_id=None, user_pw=None, user_name=None, user_email=None):
         self.user_id = user_id
@@ -29,48 +32,81 @@ class UserPhysical(db_Base):
     user_id = Column(VARCHAR(20), ForeignKey('User.user_id'), primary_key=True)
     user_height = Column(DECIMAL(5,2))
     user_weight = Column(DECIMAL(5,2))
+    user_of_birth = Column(Date, nullable=False)
     recorded_time = Column(TIMESTAMP, primary_key=True)
-    user = relationship("User", backref="usertouserphysical")
     
-    def __init__(self, user_id=None, user_height=None, user_weight=None, recorded_time=None):
+    user = relationship("User", back_populates="user_physicals")
+
+    
+    def __init__(self, user_id=None, user_height=None, user_weight=None, user_of_birth=None, recorded_time=None):
         self.user_id = user_id
         self.user_height = user_height
         self.user_weight = user_weight
+        self.user_of_birth = user_of_birth
         self.recorded_time = recorded_time
-        
-    def __repr__(self):
-        return f'UserPhysical(user_id={self.user_id}, user_height={self.user_height}, user_weight={self.user_weight}, recorded_time={self.recorded_time})'
     
+    def __repr__(self):
+        return f'UserPhysical(user_id={self.user_id}, user_height={self.user_height}, user_weight={self.user_weight}, user_of_birth={self.user_of_birth} ,recorded_time={self.recorded_time})'
+    
+    
+    
+class UserRecord(db_Base):
+    __tablename__ = 'UserRecord'
+    
+    workout_name = Column(VARCHAR(100), ForeignKey('WhatKindWorkOut.workout_name'), primary_key=True)
+    today = Column(TIMESTAMP, ForeignKey('DailyRecord.today'), primary_key=True)
+    weight = Column(DECIMAL(5,2))
+    count = Column(INTEGER)
+    
+    workout = relationship("WhatKindWorkOut", back_populates="user_records")
+    daily_record = relationship("DailyRecord", back_populates="user_records")
+    
+    def __init__(self, workout_name=None, today=None, weight=None, count=None):
+        self.workout_name=workout_name
+        self.today = today
+        self.weight = weight
+        self.count = count
+    
+    def __repr__(self):
+        return f'UserRecord(workout_name={self.workout_name}, today={self.today}, weight={self.weight}, count={self.count})'    
     
     
 class WhatKindWorkOut(db_Base):
     __tablename__ = 'WhatKindWorkOut'
     
-    workout_name = Column(VARCHAR(100), ForeignKey('Routine.workout_name'), primary_key=True)
+    workout_id = Column(INTEGER, primary_key=True, autoincrement=True)
+    workout_name = Column(VARCHAR(100), index=True)
     region = Column(VARCHAR(50))
+    equipment = Column(VARCHAR(50))
     info = Column(VARCHAR(2000))
-    your_record = Column(VARCHAR(100))
-    routine = relationship("Routine", backref="routinetowhatkinworkout")    
     
-    def __init__(self, workout_name=None, region=None, info=None, your_record=None):
+    routines = relationship("Routine", back_populates="workout_type")
+    user_records = relationship("UserRecord", back_populates="workout")
+    
+    def __init__(self, workout_name=None, region=None, equipment=None, info=None):
         self.workout_name = workout_name
         self.region = region
+        self.equipment = equipment
         self.info = info
-        self.your_record = your_record
         
     def __repr__(self):
-        return f'WhatKindWorkOut(workout_name={self.workout_name}, region={self.region}, info={self.info}, your_record={self.your_record})'
+        return f'WhatKindWorkOut(workout_name={self.workout_name}, region={self.region},equipment={self.equipment} , info={self.info})'
     
 
 
 class Routine(db_Base):    
     __tablename__ = 'Routine'
     
-    template_name = Column(VARCHAR(100), primary_key=True)
+    routine_id = Column(INTEGER, primary_key=True, autoincrement=True)
+    template_name = Column(VARCHAR(100), nullable=False)
     user_id = Column(VARCHAR(20), ForeignKey('User.user_id') ,nullable=False)
     routine_name = Column(VARCHAR(100), nullable=False, index=True)
-    workout_name = Column(VARCHAR(100), nullable=False, index=True)
-    user = relationship("User", backref="usertoroutine")
+    workout_name = Column(VARCHAR(100), ForeignKey('WhatKindWorkOut.workout_name'), nullable=False)
+    
+    user = relationship("User", back_populates="routines")
+    workout_type = relationship("WhatKindWorkOut", back_populates="routines")
+    daily_records = relationship("DailyRecord", back_populates="routine")
+    
     
     def __init__(self, template_name=None, user_id=None, routine_name=None, workout_name=None):
         self.template_name = template_name
@@ -90,8 +126,11 @@ class DailyRecord(db_Base):
     routine_name = Column(VARCHAR(100), ForeignKey('Routine.routine_name'))
     workout_name = Column(VARCHAR(100))
     weight = Column(DECIMAL(5,2))
-    count = Column(DECIMAL(5))
-    routine = relationship(Routine, backref="routinetodailyrecord")
+    count = Column(INTEGER)
+    
+    routine = relationship("Routine", back_populates="daily_records")
+    user_records = relationship("UserRecord", back_populates="daily_record")
+
     
     def __init__(self, today=None, routine_name=None, workout_name=None, weight=None, count=None):
         self.today = today
@@ -105,5 +144,4 @@ class DailyRecord(db_Base):
     
 
 
-    
     
