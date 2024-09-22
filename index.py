@@ -1,23 +1,50 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, abort
+from flask import Flask, render_template, request, redirect, url_for, flash, abort, jsonify
 from WORKOUT_PROJECT import app
 from WORKOUT_PROJECT.init_db import db_session
 from WORKOUT_PROJECT.db_table import User, UserPhysical, WhatKindWorkOut, Routine, DailyRecord
 from sqlalchemy.exc import SQLAlchemyError
 from datetime import date, datetime
 from sqlalchemy import desc, or_
+from argon2 import PasswordHasher
+from argon2.exceptions import VerifyMismatchError, InvalidHash
+from werkzeug.security import check_password_hash
+from flask_login import login_user, login_required, logout_user, current_user
+# current_user는 현재 사용자를 나타내는 객체 ,  로그인 된 경우 사용자의 정보를 담을 것이고, 로그인되지 않는 경우 AnonymousUserMixin은 상속받아 익명 사용자 객체로 됨
+
+
 
 # csv파일 DB에 입력하기 위해
 import pandas as pd
 
 
-
-
 @app.route('/')
 def index():
+    if current_user.is_authenticated:
+        return render_template('index.html', username=current_user.user_name)
     return render_template('index.html')
 
 
+@app.route('/myprofile', methods=['GET'])
+# @login_required를 통해 /myprofile은 로그인한 사용자만 접근 할 수 있음
+# 로그인 되어 있지 않는다면 __init__.py에서 login_manager.login_view = 'login' 이 코드를 통해 'login'페이지로 이동하게 됨
+@login_required
+def myprofile():
+    user_physicals = UserPhysical.query.filter_by(user_id=current_user.user_id).order_by(UserPhysical.recorded_time.desc()).all()
+    return render_template('myprofile.html', user_physicals=user_physicals)
+
+@app.route('/myprofile', methods=['POST'])
+@login_required
+def add_physical():
+    try:
+        height = request.form.get('height')
+        weight = request.form.get('weight')
+        #20240923, 00시 19일 까지 작업함
+
+
+
+
 @app.route('/routine')
+@login_required
 def routine():
     return render_template('routine.html')
 
@@ -100,9 +127,55 @@ def myrecoard():
 
 
 # 로그인
-@app.route('/login')
+@app.route('/login', methods=['GET'])
 def login():
     return render_template('login.html')
+
+
+
+@app.route('/login', methods=['POST'])
+def login_post():
+    ph = PasswordHasher()
+    
+    id = request.form.get('id')
+    passwd = request.form.get('passwd')
+    
+    print(f"Attempting login for user: {id}")  # 디버깅용 출력
+    
+    user = User.query.filter_by(user_id=id).first()
+    if user:
+        print(f"User found: {user.user_id}")
+        print(f"Stored password hash: {user.user_pw}")  # 저장된 해시 출력
+        try:
+            if ph.verify(user.user_pw, passwd):
+                # login_user의 user는 User 테이블의 UserMixin은 상속받아야함, remember는 브라우저 닫아도 로그인상태 유지 , duration은 로그인상태 유지 기간 설정함, 그외 force, fresh 기능있음
+                login_user(user, remember=True)
+                print('User login successful')
+                return redirect(url_for('index'))
+            else:
+                print("Password verification failed")  # 디버깝용 출력
+        except VerifyMismatchError:
+            print("Password mismatch")  # 디버깅용 출력
+        except InvalidHash:
+            print("Invalid hash format")
+        except Exception as e:
+            print(f"An error occurred: {str(e)}")  # 디버깅용 출력
+    else:
+        print(f"No user found with id: {id}")  # 디버깅용 출력
+        
+    flash('Invalid username or password')
+    print('Login Failed')
+    return render_template('login.html')
+
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
+
 
 # 비밀번호 찾기
 @app.route('/password')

@@ -1,17 +1,36 @@
 from WORKOUT_PROJECT.init_db import db_session
 from flask import Flask
 from WORKOUT_PROJECT.init_db import init_database
+from flask_login import LoginManager, current_user
+from .db_table import User
+import os
 
 
 app = Flask(__name__)
+# Remember me 기능을 위해서 10,11번째줄 작성
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+app.secret_key = os.urandom(24)
 app.debug = True
+
+
+
+
+@app.context_processor
+def inject_user():
+    return dict(current_user=current_user)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     db_session.remove()
     
 import WORKOUT_PROJECT.index
-
 
 
 # 애플리케이션 생성 시점에 초기화 코드 실행

@@ -2,13 +2,15 @@ from WORKOUT_PROJECT.init_db import db_Base
 from sqlalchemy import Column, VARCHAR, DECIMAL, TIMESTAMP, INTEGER, Float, Boolean, Date, DateTime
 from sqlalchemy.orm import relationship, backref 
 from sqlalchemy import ForeignKey
+from argon2 import PasswordHasher
+from flask_login import UserMixin
 
 
-class User(db_Base):
+class User(UserMixin, db_Base):
     __tablename__ = 'User'
     
     user_id = Column(VARCHAR(20), primary_key=True)
-    user_pw = Column(VARCHAR(100), nullable=False)
+    user_pw = Column(VARCHAR(255), nullable=False)  # argon2 해시함수 사용하기 위해 (100)에서 (255)로 늘림
     user_name = Column(VARCHAR(20), nullable=False)
     user_email = Column(VARCHAR(100))
     
@@ -20,6 +22,19 @@ class User(db_Base):
         self.user_pw = user_pw
         self.user_name = user_name
         self.user_email = user_email
+        
+    def get_id(self):
+        return str(self.user_id)
+    
+    # Argon2 해시 함수 적용 코드    
+    def set_password(self, password):
+        ph = PasswordHasher()
+        self.user_pw = ph.hash(password)
+
+    # Argon2 해시 함수 적용 코드        
+    def check_password(self, password):
+        ph = PasswordHasher()
+        return ph.verify(self.user_pw, password)
     
     def __repr__(self):
         return f'User(user_id={self.user_id}, user_pw={self.user_pw}, user_name={self.user_name}, user_email={self.user_email})'
