@@ -1,3 +1,56 @@
 {% extends "base.html" %}
 
+{% block content %}
+<div class="container mt-4">
+    <h1>나의 루틴</h1>
+    <div id="templates">
+        {% for template in templates %}
+            <div class="template-item" onclick="loadRoutines('{{ template }}')">
+                <h2>{{ template }}</h2>
+            </div>
+        {% endfor %}
+    </div>
+    <div id="routines"></div>
+    <div id="workouts"></div>
+</div>
 
+<script>
+function loadRoutines(templateName) {
+    fetch(`/get_routines/${encodeURIComponent(templateName)}`)
+        .then(response => response.json())
+        .then(routines => {
+            let routinesHtml = '<h3>' + templateName + ' 루틴</h3>';
+            routines.forEach(routine => {
+                routinesHtml += `<div class="routine-item" onclick="loadWorkouts('${templateName}', '${routine}')">${routine}</div>`;
+            });
+            document.getElementById('routines').innerHTML = routinesHtml;
+            document.getElementById('workouts').innerHTML = '';
+        });
+}
+
+function loadWorkouts(templateName, routineName) {
+    fetch(`/get_workouts/${encodeURIComponent(templateName)}/${encodeURIComponent(routineName)}`)
+        .then(response => response.json())
+        .then(workouts => {
+            let workoutsHtml = '<h4>' + routineName + ' 운동</h4>';
+            workouts.forEach(workout => {
+                workoutsHtml += `<div class="workout-item">${workout.workout_name}</div>`;
+            });
+            document.getElementById('workouts').innerHTML = workoutsHtml;
+        });
+}
+</script>
+
+<style>
+.template-item, .routine-item, .workout-item {
+    cursor: pointer;
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+}
+.template-item:hover, .routine-item:hover {
+    background-color: #e0e0e0;
+}
+</style>
+{% endblock %}

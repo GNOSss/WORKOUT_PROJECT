@@ -1,8 +1,142 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>My profile</h1>
+<div class="container mt-4">
+    <h1>My Profile</h1>
+    
+    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#newPhysicalModal">
+        최신 신체 정보 입력
+    </button>
 
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Height (cm)</th>
+                <th>Weight (kg)</th>
+                <th>Birth Date</th>
+                <th>Recorded Time</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for physical in user_physicals %}
+            <tr>
+                <td>{{ physical.user_height }}</td>
+                <td>{{ physical.user_weight }}</td>
+                <td>{{ physical.user_of_birth }}</td>
+                <td>{{ physical.recorded_time }}</td>
+                <td>
+                    <button class="btn btn-warning btn-sm" onclick="editPhysical('{{ physical.user_id }}', '{{ physical.recorded_time }}', '{{ physical.user_height }}', '{{ physical.user_weight }}', '{{ physical.user_of_birth }}')">Edit</button>
+                    <button class="btn btn-danger btn-sm" onclick="deletePhysical('{{ physical.user_id }}', '{{ physical.recorded_time }}')">Delete</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
+    <!-- New Physical Modal -->
+    <div class="modal fade" id="newPhysicalModal" tabindex="-1" aria-labelledby="newPhysicalModalLabel" aria-hidden="true">
+        <!-- 기존 모달 내용 -->
+    </div>
 
+    <!-- Edit Physical Modal -->
+    <div class="modal fade" id="editPhysicalModal" tabindex="-1" aria-labelledby="editPhysicalModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editPhysicalModalLabel">신체 정보 수정</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editPhysicalForm">
+                        <input type="hidden" id="editUserId" name="editUserId">
+                        <input type="hidden" id="editRecordedTime" name="editRecordedTime">
+                        <div class="mb-3">
+                            <label for="editHeight" class="form-label">Height (cm)</label>
+                            <input type="number" class="form-control" id="editHeight" name="editHeight" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editWeight" class="form-label">Weight (kg)</label>
+                            <input type="number" class="form-control" id="editWeight" name="editWeight" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editBirthdate" class="form-label">Birth Date</label>
+                            <input type="date" class="form-control" id="editBirthdate" name="editBirthdate" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="updatePhysical()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function deletePhysical(userId, recordedTime) {
+    if (confirm('Are you sure you want to delete this record?')) {
+        fetch(`/delete_physical/${userId}/${encodeURIComponent(recordedTime)}`, {
+            method: 'DELETE',
+        })
+        .then(response => {
+            if (response.ok) {
+                location.reload();
+            } else {
+                return response.json().then(data => {
+                    throw new Error(data.error || 'Unknown error occurred');
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error deleting record: ' + error.message);
+        });
+    }
+}
+
+function editPhysical(userId, recordedTime, height, weight, birthdate) {
+    document.getElementById('editUserId').value = userId;
+    document.getElementById('editRecordedTime').value = recordedTime;
+    document.getElementById('editHeight').value = height;
+    document.getElementById('editWeight').value = weight;
+    document.getElementById('editBirthdate').value = birthdate;
+    
+    new bootstrap.Modal(document.getElementById('editPhysicalModal')).show();
+}
+
+function updatePhysical() {
+    const userId = document.getElementById('editUserId').value;
+    const recordedTime = document.getElementById('editRecordedTime').value;
+    const height = document.getElementById('editHeight').value;
+    const weight = document.getElementById('editWeight').value;
+    const birthdate = document.getElementById('editBirthdate').value;
+
+    fetch(`/update_physical/${userId}/${encodeURIComponent(recordedTime)}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            height: height,
+            weight: weight,
+            birthdate: birthdate
+        })
+    })
+    .then(response => {
+        if (response.ok) {
+            location.reload();
+        } else {
+            return response.json().then(data => {
+                throw new Error(data.error || 'Unknown error occurred');
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error updating record: ' + error.message);
+    });
+}
+</script>
 {% endblock content %}
